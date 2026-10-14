@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "Machine": {
+      "title": "Machine",
+      "description": "Equipment in the store requiring periodic cleaning and conservation tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 120 },
+        "code": { "type": "string", "maxLength": 50 },
+        "department": { "type": "string", "maxLength": 80 },
+        "model": { "type": "string", "maxLength": 100 },
+        "serialNumber": { "type": "string", "maxLength": 80 },
+        "frequencyHours": { "type": "number" },
+        "frequencyLabel": { "type": "string", "maxLength": 50 },
+        "conservationStatus": { "type": "string", "enum": ["excelente", "bom", "regular", "critico"] },
+        "lastCleanedAt": { "type": "string", "format": "date-time" },
+        "lastCleanedBy": { "type": "string", "maxLength": 100 },
+        "nextCleaningAt": { "type": "string", "format": "date-time" },
+        "chemicalProducts": { "type": "string", "maxLength": 250 },
+        "checklist": { "type": "string", "maxLength": 500 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "assignedStaffId": { "type": "string", "maxLength": 64 },
+        "assignedStaffName": { "type": "string", "maxLength": 100 },
+        "assignedStaffEmail": { "type": "string", "maxLength": 120 },
+        "assignedStaffPhone": { "type": "string", "maxLength": 40 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "code", "department", "conservationStatus", "frequencyHours"]
+    },
+    "CleaningLog": {
+      "title": "CleaningLog",
+      "description": "Record of a completed cleaning and sanitization procedure for a machine",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "machineId": { "type": "string", "maxLength": 64 },
+        "machineName": { "type": "string", "maxLength": 120 },
+        "machineCode": { "type": "string", "maxLength": 50 },
+        "cleanedAt": { "type": "string", "format": "date-time" },
+        "cleanedBy": { "type": "string", "maxLength": 100 },
+        "conservationStatus": { "type": "string", "enum": ["excelente", "bom", "regular", "critico"] },
+        "productsUsed": { "type": "string", "maxLength": 250 },
+        "checklistCompleted": { "type": "boolean" },
+        "checklistItems": { "type": "string", "maxLength": 500 },
+        "durationMinutes": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["machineId", "machineName", "cleanedAt", "cleanedBy", "conservationStatus"]
+    },
+    "MaintenanceStaff": {
+      "title": "MaintenanceStaff",
+      "description": "Store maintenance and cleaning personnel",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "maxLength": 80 },
+        "email": { "type": "string", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 40 },
+        "department": { "type": "string", "maxLength": 80 },
+        "shift": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "email", "role"]
+    },
+    "NotificationLog": {
+      "title": "NotificationLog",
+      "description": "Audit record of push and email reminders sent to staff",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "machineId": { "type": "string", "maxLength": 64 },
+        "machineName": { "type": "string", "maxLength": 120 },
+        "type": { "type": "string", "enum": ["email", "push", "system"] },
+        "recipient": { "type": "string", "maxLength": 120 },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["sent", "delivered", "failed"] },
+        "sentAt": { "type": "string" }
+      },
+      "required": ["type", "recipient", "title", "sentAt"]
+    }
+  },
+  "firestore": {
+    "/machines/{machineId}": {
+      "schema": "Machine",
+      "description": "Store machines with cleaning schedule and conservation status"
+    },
+    "/cleaning_logs/{logId}": {
+      "schema": "CleaningLog",
+      "description": "Audit trail of cleaning events for machines"
+    },
+    "/staff/{staffId}": {
+      "schema": "MaintenanceStaff",
+      "description": "Staff responsible for machine cleaning and maintenance"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "NotificationLog",
+      "description": "Log of alerts and reminders dispatched"
+    }
+  }
+}

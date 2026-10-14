@@ -1,0 +1,6 @@
+{
+  "name": "CleanMachine - Gestão de Higienização de Equipamentos",
+  "description": "Sistema completo para controle de limpeza, status de conservação e lembretes automáticos para máquinas e equipamentos da loja com relatórios em PDF.",
+  "requestFramePermissions": ["notifications"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
